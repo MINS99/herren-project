@@ -1,6 +1,6 @@
-package com.manage.shop.staff.domain;
+package com.herren.project.staff.domain;
 
-import com.manage.shop.shop.domain.Shop;
+import com.herren.project.shop.domain.Shop;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package com.manage.shop.shop.domain;
+package com.herren.project.shop.domain;
 
-import com.manage.shop.staff.domain.Staff;
+import com.herren.project.staff.domain.Staff;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
