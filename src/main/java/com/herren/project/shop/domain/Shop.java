@@ -1,15 +1,16 @@
 package com.herren.project.shop.domain;
 
-import com.herren.project.staff.domain.Staff;
-import java.util.List;
+import com.herren.project.employees.domain.Employee;
+import com.herren.project.employees.domain.Staff;
+import java.util.ArrayList;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Shop {
@@ -25,20 +26,19 @@ public class Shop {
     private String kakaoId;
     @Enumerated(EnumType.STRING)
     private ShopStatus shopStatus;
-    @OneToMany(mappedBy = "shop")
-    private List<Staff> staffList;
+    @Embedded
+    private Staff staff;
 
     protected Shop() {
     }
 
-    public Shop(String shopName, String bizNumber, String phoneNumber, String kakaoId,
-                ShopStatus shopStatus, List<Staff> staffList) {
+    public Shop(String shopName, String bizNumber, String phoneNumber, String kakaoId, ShopStatus shopStatus) {
         this.shopName = shopName;
         this.bizNumber = bizNumber;
         this.phoneNumber = phoneNumber;
         this.kakaoId = kakaoId;
         this.shopStatus = shopStatus;
-        this.staffList = staffList;
+        this.staff = new Staff(new ArrayList<>());
     }
 
     public String getShopName() {
@@ -61,8 +61,8 @@ public class Shop {
         return shopStatus;
     }
 
-    public List<Staff> getStaffList() {
-        return staffList;
+    public Staff getStaff() {
+        return staff;
     }
 
     public void changeShopStatus(ShopStatus shopStatus) {
@@ -72,5 +72,13 @@ public class Shop {
             this.phoneNumber = null;
             this.kakaoId = null;
         }
+    }
+
+    public void updateStaff(Employee employee) {
+        this.staff.addEmployee(employee);
+    }
+
+    public void deleteStaffInfo(Employee employee) {
+        this.staff.removeEmployee(employee);
     }
 }
