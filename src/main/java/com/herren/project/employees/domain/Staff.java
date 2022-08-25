@@ -1,6 +1,7 @@
 package com.herren.project.employees.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -14,11 +15,11 @@ public class Staff {
     }
 
     public Staff(List<Employee> staff) {
-        this.staff = staff;
+        this.staff = new ArrayList<>(staff);
     }
 
     public List<Employee> getStaff() {
-        return staff;
+        return Collections.unmodifiableList(staff);
     }
 
     public void addEmployee(Employee employee) {
