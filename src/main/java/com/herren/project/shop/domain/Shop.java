@@ -4,6 +4,8 @@ import com.herren.project.staff.domain.Staff;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,10 +23,22 @@ public class Shop {
     @Column(nullable = false)
     private String phoneNumber;
     private String kakaoId;
+    @Enumerated(EnumType.STRING)
+    private ShopStatus shopStatus;
     @OneToMany(mappedBy = "shop")
     private List<Staff> staffList;
 
     protected Shop() {
+    }
+
+    public Shop(String shopName, String bizNumber, String phoneNumber, String kakaoId,
+                ShopStatus shopStatus, List<Staff> staffList) {
+        this.shopName = shopName;
+        this.bizNumber = bizNumber;
+        this.phoneNumber = phoneNumber;
+        this.kakaoId = kakaoId;
+        this.shopStatus = shopStatus;
+        this.staffList = staffList;
     }
 
     public String getShopName() {
@@ -43,7 +57,20 @@ public class Shop {
         return kakaoId;
     }
 
+    public ShopStatus getShopStatus() {
+        return shopStatus;
+    }
+
     public List<Staff> getStaffList() {
         return staffList;
+    }
+
+    public void changeShopStatus(ShopStatus shopStatus) {
+        this.shopStatus = shopStatus;
+        if (this.shopStatus == ShopStatus.DELETE) {
+            this.bizNumber = null;
+            this.phoneNumber = null;
+            this.kakaoId = null;
+        }
     }
 }
