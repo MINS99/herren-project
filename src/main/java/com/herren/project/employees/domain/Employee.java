@@ -1,4 +1,4 @@
-package com.herren.project.staff.domain;
+package com.herren.project.employees.domain;
 
 import com.herren.project.shop.domain.Shop;
 import javax.persistence.Column;
@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Staff {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +21,19 @@ public class Staff {
     private String phoneNumber;
     private String kakaoId;
     @Enumerated(EnumType.STRING)
-    private StaffStatus staffStatus;
+    private EmployeeStatus employeeStatus;
     @ManyToOne
     private Shop shop;
 
-    protected Staff() {
+    protected Employee() {
+    }
+
+    public Employee(String name, String phoneNumber, String kakaoId, EmployeeStatus employeeStatus, Shop shop) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.kakaoId = kakaoId;
+        this.employeeStatus = employeeStatus;
+        this.shop = shop;
     }
 
     public String getName() {
@@ -40,11 +48,21 @@ public class Staff {
         return kakaoId;
     }
 
-    public StaffStatus getStaffStatus() {
-        return staffStatus;
+    public EmployeeStatus getStaffStatus() {
+        return employeeStatus;
     }
 
     public Shop getShop() {
         return shop;
+    }
+
+    public void changeStaffStatus(EmployeeStatus employeeStatus) {
+        this.employeeStatus = employeeStatus;
+        if (this.employeeStatus == EmployeeStatus.DELETE) {
+            this.name = null;
+            this.phoneNumber = null;
+            this.kakaoId = null;
+            this.shop.deleteStaffInfo(this);
+        }
     }
 }
