@@ -3,6 +3,8 @@ package com.herren.project.staff.domain;
 import com.herren.project.shop.domain.Shop;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,8 @@ public class Staff {
     @Column(nullable = false, unique = true)
     private String phoneNumber;
     private String kakaoId;
+    @Enumerated(EnumType.STRING)
+    private StaffStatus staffStatus;
     @ManyToOne
     private Shop shop;
 
@@ -34,6 +38,10 @@ public class Staff {
 
     public String getKakaoId() {
         return kakaoId;
+    }
+
+    public StaffStatus getStaffStatus() {
+        return staffStatus;
     }
 
     public Shop getShop() {
