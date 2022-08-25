@@ -1,4 +1,4 @@
-package com.manage.shop;
+package com.herren.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
