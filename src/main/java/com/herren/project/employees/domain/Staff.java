@@ -9,13 +9,10 @@ import javax.persistence.OneToMany;
 @Embeddable
 public class Staff {
     @OneToMany(mappedBy = "shop")
-    private List<Employee> staff = new ArrayList<>();
+    private final List<Employee> staff;
 
-    protected Staff() {
-    }
-
-    public Staff(List<Employee> staff) {
-        this.staff = new ArrayList<>(staff);
+    public Staff() {
+        this.staff = new ArrayList<>();
     }
 
     public List<Employee> getStaff() {
@@ -23,10 +20,17 @@ public class Staff {
     }
 
     public void addEmployee(Employee employee) {
+        validateStaffCheck(employee);
         this.staff.add(employee);
     }
 
-    public void removeEmployee(Employee employee) {
+    public void deleteEmployee(Employee employee) {
         this.staff.remove(employee);
+    }
+
+    private void validateStaffCheck(Employee employee) {
+        if (this.staff.contains(employee)) {
+            throw new IllegalArgumentException("이미 해당 샵에 존재하는 직원입니다.");
+        }
     }
 }
