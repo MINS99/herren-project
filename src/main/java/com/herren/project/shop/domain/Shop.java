@@ -2,7 +2,6 @@ package com.herren.project.shop.domain;
 
 import com.herren.project.employees.domain.Employee;
 import com.herren.project.employees.domain.Staff;
-import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -38,7 +37,7 @@ public class Shop {
         this.phoneNumber = phoneNumber;
         this.kakaoId = kakaoId;
         this.shopStatus = shopStatus;
-        this.staff = new Staff(new ArrayList<>());
+        this.staff = new Staff();
     }
 
     public String getShopName() {
@@ -79,6 +78,6 @@ public class Shop {
     }
 
     public void deleteStaffInfo(Employee employee) {
-        this.staff.removeEmployee(employee);
+        this.staff.deleteEmployee(employee);
     }
 }

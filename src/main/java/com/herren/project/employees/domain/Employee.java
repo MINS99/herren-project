@@ -28,12 +28,11 @@ public class Employee {
     protected Employee() {
     }
 
-    public Employee(String name, String phoneNumber, String kakaoId, EmployeeStatus employeeStatus, Shop shop) {
+    public Employee(String name, String phoneNumber, String kakaoId, EmployeeStatus employeeStatus) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.kakaoId = kakaoId;
         this.employeeStatus = employeeStatus;
-        this.shop = shop;
     }
 
     public String getName() {
@@ -56,13 +55,39 @@ public class Employee {
         return shop;
     }
 
+    public void joinShop(Shop shop) {
+        validateJoinShopCheck();
+        this.shop = shop;
+        this.shop.updateStaff(this);
+    }
+
+    public void resignShop() {
+        if (this.shop != null) {
+            this.shop.deleteStaffInfo(this);
+            this.shop = null;
+        }
+    }
+
     public void changeStaffStatus(EmployeeStatus employeeStatus) {
         this.employeeStatus = employeeStatus;
         if (this.employeeStatus == EmployeeStatus.DELETE) {
             this.name = null;
             this.phoneNumber = null;
             this.kakaoId = null;
-            this.shop.deleteStaffInfo(this);
+            resignShop();
         }
+    }
+
+    private void validateJoinShopCheck() {
+        if (this.shop != null) {
+            throw new IllegalArgumentException("이미 근무중인 샵이 있습니다.");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
