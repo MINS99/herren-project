@@ -66,10 +66,10 @@ class EmployeeTest {
         Shop shop = new Shop("헤어샵", "12345", "010-1234-1234", "kakaoid", ShopStatus.WAITING);
         Employee employee = new Employee("직원A", "010-1234-1234", "kakao@kakao.com", EmployeeStatus.NORMAL);
         employee.joinShop(shop);
-        int actual = shop.getStaff().getStaff().size();
+        int actual = shop.getStaff().size();
 
         employee.changeStaffStatus(EmployeeStatus.DELETE);
 
-        assertThat(actual).isNotEqualTo(shop.getStaff().getStaff().size());
+        assertThat(actual).isNotEqualTo(shop.getStaff().size());
     }
 }

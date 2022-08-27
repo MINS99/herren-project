@@ -57,6 +57,6 @@ class ShopTest {
 
         employee.resignShop();
 
-        assertThat(shop.getStaff().getStaff()).isEmpty();
+        assertThat(shop.getStaff()).isEmpty();
     }
 }

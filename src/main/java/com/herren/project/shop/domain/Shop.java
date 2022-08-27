@@ -2,6 +2,7 @@ package com.herren.project.shop.domain;
 
 import com.herren.project.employees.domain.Employee;
 import com.herren.project.employees.domain.Staff;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -40,6 +41,10 @@ public class Shop {
         this.staff = new Staff();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getShopName() {
         return shopName;
     }
@@ -60,8 +65,8 @@ public class Shop {
         return shopStatus;
     }
 
-    public Staff getStaff() {
-        return staff;
+    public List<Employee> getStaff() {
+        return staff.getStaff();
     }
 
     public void changeShopStatus(ShopStatus shopStatus) {

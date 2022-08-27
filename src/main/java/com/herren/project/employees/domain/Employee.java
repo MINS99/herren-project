@@ -1,5 +1,7 @@
 package com.herren.project.employees.domain;
 
+import com.herren.project.exception.CommonException;
+import com.herren.project.exception.ErrorCode;
 import com.herren.project.shop.domain.Shop;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -23,6 +26,7 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmployeeStatus employeeStatus;
     @ManyToOne
+    @JoinColumn(name = "shop_id", insertable = false, updatable = false)
     private Shop shop;
 
     protected Employee() {
@@ -33,6 +37,10 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.kakaoId = kakaoId;
         this.employeeStatus = employeeStatus;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -80,14 +88,7 @@ public class Employee {
 
     private void validateJoinShopCheck() {
         if (this.shop != null) {
-            throw new IllegalArgumentException("이미 근무중인 샵이 있습니다.");
+            throw new CommonException(ErrorCode.DUPLICATE_SHOP_INFO);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "name='" + name + '\'' +
-                '}';
     }
 }
