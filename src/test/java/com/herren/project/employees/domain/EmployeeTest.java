@@ -1,9 +1,10 @@
 package com.herren.project.employees.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.herren.project.exception.CommonException;
 import com.herren.project.shop.domain.Shop;
 import com.herren.project.shop.domain.ShopStatus;
 import org.junit.jupiter.api.DisplayName;
@@ -55,9 +56,9 @@ class EmployeeTest {
         Employee employee = new Employee("직원A", "010-1234-1234", "kakao@kakao.com", EmployeeStatus.NORMAL);
         employee.joinShop(shop);
 
-        assertThatIllegalArgumentException().isThrownBy(
+        assertThatThrownBy(
                 () -> employee.joinShop(shop)
-        ).withMessageContaining("이미 근무중인 샵이 있습니다.");
+        ).isInstanceOf(CommonException.class);
     }
 
     @Test
