@@ -4,6 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.herren.project.employees.domain.Employee;
+import com.herren.project.employees.domain.EmployeeRepository;
+import com.herren.project.employees.dto.EmployeeCreateRequest;
+import com.herren.project.employees.dto.EmployeeInfoResponse;
 import com.herren.project.exception.CommonException;
 import com.herren.project.shop.domain.Shop;
 import com.herren.project.shop.domain.ShopRepository;
@@ -25,6 +29,9 @@ class ShopServiceTest {
 
     @Autowired
     private ShopRepository shopRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Test
     @DisplayName("샵을 조회한다")
@@ -57,12 +64,24 @@ class ShopServiceTest {
     @DisplayName("샵 생성시 사업자번호가 중복되면 409 에러가 발생한다")
     void createShopInfo_dup_bizNumber() {
         ShopCreateRequest shopCreateRequest = new ShopCreateRequest("준오헤어", "102", "010-1234-1234", "juno@kakao.com");
-        ShopInfoResponse shopInfoResponse = shopService.createShopInfo(shopCreateRequest);
+        shopService.createShopInfo(shopCreateRequest);
         ShopCreateRequest shopCreateRequest2 = new ShopCreateRequest("준오헤어 2호점", "102", "010-3455-3455",
                 "jun2o@kakao.com");
 
         assertThatThrownBy(
                 () -> shopService.createShopInfo(shopCreateRequest2)
         ).isInstanceOf(CommonException.class);
+    }
+
+    @Test
+    @DisplayName("샵을 삭제한다")
+    void deleteShopInfo() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("준오헤어", "102", "010-1234-1234", "juno@kakao.com");
+        ShopInfoResponse shopInfoResponse = shopService.createShopInfo(shopCreateRequest);
+
+        shopService.deleteShopInfo(shopInfoResponse.getId());
+
+        Shop shop = shopRepository.findById(shopInfoResponse.getId()).get();
+        assertThat(shop.getShopStatus()).isEqualTo(ShopStatus.DELETE);
     }
 }
