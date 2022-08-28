@@ -12,9 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @DynamicUpdate
+@SQLDelete(sql = "UPDATE shop SET biz_number = null, phone_number = null, kakao_id = null, shop_status = 'DELETE' WHERE id = ?")
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

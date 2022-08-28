@@ -90,5 +90,4 @@ class ShopServiceMockTest {
                 () -> shopService.createShopInfo(shopCreateRequest)
         ).isInstanceOf(CommonException.class);
     }
-
 }
