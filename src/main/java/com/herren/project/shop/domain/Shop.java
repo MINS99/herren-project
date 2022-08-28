@@ -11,17 +11,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
+@DynamicUpdate
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String shopName;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String bizNumber;
-    @Column(nullable = false)
     private String phoneNumber;
     private String kakaoId;
     @Enumerated(EnumType.STRING)
