@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.herren.project.employees.domain.Employee;
 import com.herren.project.employees.domain.EmployeeStatus;
+import com.herren.project.shop.dto.ShopCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,5 +59,15 @@ class ShopTest {
         employee.resignShop();
 
         assertThat(shop.getStaff()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("샵 등록 시 상태값을 등록대기로 변경한다")
+    void createShopInfo_shopstatus_waiting() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("헤어샵", "12345", "010-1234-1234", "kakaoid");
+
+        Shop actual = shopCreateRequest.toEntity();
+
+        assertThat(actual.getShopStatus()).isEqualTo(ShopStatus.WAITING);
     }
 }
