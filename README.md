@@ -4,7 +4,7 @@
 + Language: Java11
 + Spring Boot: 2.4.5
 + Packaging: Jar
-+ Dependencies : Spring Web, Spring Data JPA, H2 Database, JUnit5
++ Dependencies : Spring Web, Spring Validation, Spring Data JPA, H2 Database, JUnit5, Rest Assured
 
 ## DB table
 - 샵 정보
