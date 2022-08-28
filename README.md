@@ -156,7 +156,7 @@
 2. 각 요청에 대한 예외를 공통 클래스로 처리하였습니다
    1. `CommonExceptionHandler.class` 를 통해 특정 케이스의 예외가 던져지면 `ErrorCode`에 맞춰 ErrorResponse 객체를 응답합니다.
    2. 추후 예외 처리에 대한 확장을 고려하여 공통 예외 코드 enum `ErrorCode`와 공통 응답 객체 `ErrorResponse`를 구현하였습니다.
-3. API 명세에 맞춰 기능을 구현하였습니다
+3. [API 명세](https://github.com/MINS99/herren-project/wiki/API-%EB%AA%85%EC%84%B8) 에 맞춰 기능을 구현하였습니다
    1. 서비스에 대한 테스트는 without Mock, with Mock 두 가지 테스트를 진행하였습니다.
    2. end to end 테스트로 rest assured를 사용하였습니다.
    3. 요청으로 들어오는 값에 대한 검증은 Spring validation을 통해 하였습니다.
