@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Embeddable
 public class Staff {
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private final List<Employee> staff;
 
     public Staff() {
