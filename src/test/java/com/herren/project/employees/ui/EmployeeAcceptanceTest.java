@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-class EmployeeAcceptanceTest extends AcceptanceTest {
+public class EmployeeAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     public void setUp() {

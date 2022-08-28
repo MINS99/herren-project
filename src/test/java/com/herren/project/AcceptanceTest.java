@@ -43,6 +43,15 @@ public class AcceptanceTest {
                 .extract();
     }
 
+    public static <T> ExtractableResponse<Response> doPut(String path) {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put(path)
+                .then().log().all()
+                .extract();
+    }
+
     public static <T> ExtractableResponse<Response> doPut(String path, T request) {
         return RestAssured
                 .given().log().all()
