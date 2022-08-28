@@ -44,7 +44,7 @@ class EmployeeTest {
         Shop shop = new Shop("헤어샵", "12345", "010-1234-1234", "kakaoid", ShopStatus.WAITING);
         Employee employee = new Employee("직원A", "010-1234-1234", "kakao@kakao.com", EmployeeStatus.NORMAL);
 
-        employee.joinShop(shop);
+        shop.updateStaff(employee);
 
         assertThat(employee.getShop()).isNotNull();
     }
@@ -54,10 +54,10 @@ class EmployeeTest {
     void duplicateJoinShop() {
         Shop shop = new Shop("헤어샵", "12345", "010-1234-1234", "kakaoid", ShopStatus.WAITING);
         Employee employee = new Employee("직원A", "010-1234-1234", "kakao@kakao.com", EmployeeStatus.NORMAL);
-        employee.joinShop(shop);
+        shop.updateStaff(employee);
 
         assertThatThrownBy(
-                () -> employee.joinShop(shop)
+                () -> shop.updateStaff(employee)
         ).isInstanceOf(CommonException.class);
     }
 
@@ -66,7 +66,7 @@ class EmployeeTest {
     void changeStaffStatusThenDeleteStaffInfoToShop() {
         Shop shop = new Shop("헤어샵", "12345", "010-1234-1234", "kakaoid", ShopStatus.WAITING);
         Employee employee = new Employee("직원A", "010-1234-1234", "kakao@kakao.com", EmployeeStatus.NORMAL);
-        employee.joinShop(shop);
+        shop.updateStaff(employee);
         int actual = shop.getStaff().size();
 
         employee.changeStaffStatus(EmployeeStatus.DELETE);

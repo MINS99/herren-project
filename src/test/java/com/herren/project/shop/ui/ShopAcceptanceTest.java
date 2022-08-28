@@ -1,9 +1,12 @@
 package com.herren.project.shop.ui;
 
+import static com.herren.project.employees.ui.EmployeeAcceptanceTest.직원을_등록한다;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.herren.project.AcceptanceTest;
+import com.herren.project.employees.domain.Employee;
+import com.herren.project.employees.domain.EmployeeStatus;
 import com.herren.project.shop.domain.Shop;
 import com.herren.project.shop.domain.ShopStatus;
 import com.herren.project.shop.dto.ShopCreateRequest;
@@ -49,6 +52,18 @@ class ShopAcceptanceTest extends AcceptanceTest {
         샵_삭제_성공(response);
     }
 
+    @Test
+    void 샵에_직원정보를_등록한다() {
+        Shop 샵1 = new Shop("벨라헤어", "31-130", "010-2345-2345", "bella@kakao.com", ShopStatus.WAITING);
+        Employee 직원1 = new Employee("박직원", "010-9999-9999", "kakao3@kakao.com", EmployeeStatus.NORMAL);
+        샵을_등록한다(샵1);
+        직원을_등록한다(직원1);
+
+        ExtractableResponse<Response> response = 샵에_직원정보를_등록한다(1L, 1L);
+
+        샵에_직원_등록성공(response);
+    }
+
     public static ExtractableResponse<Response> 샵을_등록한다(Shop shop) {
         ShopCreateRequest shopCreateRequest = new ShopCreateRequest(shop.getShopName(), shop.getBizNumber(), shop.getPhoneNumber(), shop.getKakaoId());
         return AcceptanceTest.doPost("/api/v1/shops", shopCreateRequest);
@@ -60,6 +75,10 @@ class ShopAcceptanceTest extends AcceptanceTest {
 
     public static ExtractableResponse<Response> 샵을_삭제한다(ExtractableResponse<Response> response) {
         return AcceptanceTest.doDelete(response.header("location"));
+    }
+
+    public static ExtractableResponse<Response> 샵에_직원정보를_등록한다(Long shopId, Long employeeId) {
+        return AcceptanceTest.doPut("/api/v1/shops/" + shopId + "/employee/" + employeeId);
     }
 
     public static void 샵_등록_성공(ExtractableResponse<Response> response) {
@@ -78,5 +97,9 @@ class ShopAcceptanceTest extends AcceptanceTest {
 
     public static void 샵_삭제_성공(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static void 샵에_직원_등록성공(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

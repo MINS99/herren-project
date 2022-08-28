@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.herren.project.employees.domain.Employee;
+import com.herren.project.employees.application.EmployeeService;
 import com.herren.project.employees.domain.EmployeeRepository;
 import com.herren.project.employees.dto.EmployeeCreateRequest;
 import com.herren.project.employees.dto.EmployeeInfoResponse;
@@ -26,6 +26,9 @@ class ShopServiceTest {
 
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private ShopRepository shopRepository;
@@ -83,5 +86,19 @@ class ShopServiceTest {
 
         Shop shop = shopRepository.findById(shopInfoResponse.getId()).get();
         assertThat(shop.getShopStatus()).isEqualTo(ShopStatus.DELETE);
+    }
+
+    @Test
+    @DisplayName("샵에 직원 정보를 등록한다")
+    void updateEmployeeToShop() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("헤어샵", "12345", "010-1234-1234", "kakaoid");
+        ShopInfoResponse shopInfoResponse = shopService.createShopInfo(shopCreateRequest);
+        EmployeeCreateRequest employeeCreateRequest = new EmployeeCreateRequest("한직원", "010-2323-3232", "one@kakao.com");
+        EmployeeInfoResponse employeeInfoResponse = employeeService.createEmployee(employeeCreateRequest);
+
+        shopService.updateEmployeeToShop(shopInfoResponse.getId(), employeeInfoResponse.getId());
+
+        Shop shop = shopRepository.findById(shopInfoResponse.getId()).get();
+        assertThat(shop.getStaff()).isNotNull();
     }
 }
