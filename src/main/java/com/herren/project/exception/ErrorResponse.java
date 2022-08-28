@@ -1,6 +1,7 @@
 package com.herren.project.exception;
 
 import java.time.LocalDateTime;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ErrorResponse {
@@ -42,5 +43,12 @@ public class ErrorResponse {
                 errorCode.getHttpStatus().name(), errorCode.name(), errorCode.getDetail());
 
         return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+    }
+
+    public static ResponseEntity<ErrorResponse> toResponseEntity(HttpStatus httpStatus, String errorMessage) {
+        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(),
+                httpStatus.name(), httpStatus.name(), errorMessage);
+
+        return ResponseEntity.status(httpStatus.value()).body(errorResponse);
     }
 }

@@ -3,12 +3,14 @@ package com.herren.project.shop.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.herren.project.exception.CommonException;
 import com.herren.project.shop.domain.Shop;
 import com.herren.project.shop.domain.ShopRepository;
 import com.herren.project.shop.domain.ShopStatus;
+import com.herren.project.shop.dto.ShopCreateRequest;
 import com.herren.project.shop.dto.ShopInfoResponse;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -50,4 +52,43 @@ class ShopServiceMockTest {
                 () -> shopService.findShopInfo(1L)
         ).isInstanceOf(CommonException.class);
     }
+
+    @Test
+    @DisplayName("필수, 선택 정보를 받아서 샵을 새로 등록한다")
+    void createShopInfo() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("헤어샵", "12345", "010-1234-1234", "kakaoid");
+        Shop shop = shopCreateRequest.toEntity();
+        given(shopRepository.existsByBizNumber(any())).willReturn(false);
+        given(shopRepository.save(any())).willReturn(shop);
+
+        ShopInfoResponse actual = shopService.createShopInfo(shopCreateRequest);
+
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    @DisplayName("선택 정보가 없는 경우에도 샵 등록이 가능하다")
+    void createShopInfo_selective() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("헤어샵", "12345", "010-1234-1234", null);
+        Shop shop = shopCreateRequest.toEntity();
+        given(shopRepository.existsByBizNumber(any())).willReturn(false);
+        given(shopRepository.save(any())).willReturn(shop);
+
+        ShopInfoResponse actual = shopService.createShopInfo(shopCreateRequest);
+
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    @DisplayName("샵 생성시 사업자번호가 중복되면 409 에러가 발생한다")
+    void createShopInfo_dup_bizNumber() {
+        ShopCreateRequest shopCreateRequest = new ShopCreateRequest("헤어샵", "12345", "010-1234-1234", "kakaoid");
+        Shop shop = shopCreateRequest.toEntity();
+        given(shopRepository.existsByBizNumber(any())).willReturn(true);
+
+        assertThatThrownBy(
+                () -> shopService.createShopInfo(shopCreateRequest)
+        ).isInstanceOf(CommonException.class);
+    }
+
 }
