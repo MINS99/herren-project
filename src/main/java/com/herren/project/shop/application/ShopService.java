@@ -40,11 +40,32 @@ public class ShopService {
         employeeRepository.findAllByShopId(shopId).forEach(Employee::resignShop);
     }
 
+    @Transactional
+    public void updateEmployeeToShop(Long shopId, Long employeeId) {
+        Shop savedShop = validateShopCheck(shopId);
+        Employee savedEmployee = validateEmployeeCheck(employeeId);
+        savedShop.updateStaff(savedEmployee);
+    }
+
     @Transactional(readOnly = true)
     public void validateShopBizNumberCheck(String bizNumber) {
         boolean isExistBizNumber = shopRepository.existsByBizNumber(bizNumber);
         if (isExistBizNumber) {
             throw new CommonException(ErrorCode.DUPLICATE_BIZ_INFO);
         }
+    }
+
+    @Transactional
+    public Shop validateShopCheck(Long shopId) {
+        return shopRepository.findById(shopId).orElseThrow(() -> new CommonException(ErrorCode.SHOP_NOT_FOUND));
+    }
+
+    @Transactional
+    public Employee validateEmployeeCheck(Long employeeId) {
+        Employee savedEmployee = employeeRepository.findById(employeeId).orElseThrow(() -> new CommonException(ErrorCode.EMPLOYEE_NOT_FOUND));
+        if (savedEmployee.getShop() != null) {
+            throw new CommonException(ErrorCode.DUPLICATE_SHOP_INFO);
+        }
+        return savedEmployee;
     }
 }

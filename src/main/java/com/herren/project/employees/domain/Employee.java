@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class Employee {
     private String kakaoId;
     @Enumerated(EnumType.STRING)
     private EmployeeStatus employeeStatus;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id", insertable = false)
     private Shop shop;
 
@@ -68,7 +69,6 @@ public class Employee {
     public void joinShop(Shop shop) {
         validateJoinShopCheck();
         this.shop = shop;
-        this.shop.updateStaff(this);
     }
 
     public void resignShop() {

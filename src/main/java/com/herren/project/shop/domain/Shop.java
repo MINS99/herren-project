@@ -83,6 +83,7 @@ public class Shop {
 
     public void updateStaff(Employee employee) {
         this.staff.addEmployee(employee);
+        employee.joinShop(this);
     }
 
     public void deleteStaffInfo(Employee employee) {
