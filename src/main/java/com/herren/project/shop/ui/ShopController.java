@@ -6,6 +6,7 @@ import com.herren.project.shop.dto.ShopInfoResponse;
 import java.net.URI;
 import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,11 @@ public class ShopController {
     public ResponseEntity<Void> createShopInfo(@RequestBody @Valid ShopCreateRequest shopCreateRequest) {
         ShopInfoResponse shopInfoResponse = shopService.createShopInfo(shopCreateRequest);
         return ResponseEntity.created(URI.create("/api/v1/shops/" + shopInfoResponse.getId())).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteShopInfo(@PathVariable Long id) {
+        shopService.deleteShopInfo(id);
+        return ResponseEntity.noContent().build();
     }
 }
